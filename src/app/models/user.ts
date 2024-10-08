@@ -25,6 +25,7 @@ export interface User extends Document {
     email: string;
     password: string;
     verifyCode: string;
+    isVerified: boolean;
     verifyCodeExpiry: Date;
     isAcceptingMessage: boolean;
     messages: Message[];
@@ -43,6 +44,10 @@ const userSchema: Schema<User> = new Schema({
         unique: true,
         match: [new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"), "Please use a valid email address"]
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    }, 
     password: {
         type: String,
         required: [true, "Password is required"],
