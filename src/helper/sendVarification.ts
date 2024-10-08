@@ -15,7 +15,7 @@ export async function sendVerificationEmail(
             react: VerifyEmailTemplate({username, verifyCode }),
           });
         return {
-            success: false,
+            success: true,
             message: "Verification email send successfully."
         }
     }
