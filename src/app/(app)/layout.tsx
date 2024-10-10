@@ -1,13 +1,8 @@
+import Navbar from "@/components/navbar";
 import type { Metadata } from "next";
-// import localFont from "next/font/local";
-import "./globals.css";
 import { Inter} from "next/font/google";
 
-import AuthProvider from "@/context/authProvider";
-import { Toaster } from "@/components/ui/toaster"
-
 const inter = Inter({subsets: ["latin"]})
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,15 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
       <body
         className={inter.className}
-
       >
+      <Navbar />
         {children}
-        <Toaster />
       </body>
-      </AuthProvider>
     </html>
   );
 }

@@ -71,7 +71,7 @@ const Page = () => {
         setIsSubmitting(true) // Start submission loader
         try {
             // Send form data to the sign-up API
-            const response = await axios.post<ApiResponse>('/api/sign-up', data)
+            const response = await axios.post<ApiResponse>('/api/sin-up', data)
 
             // Show success or error toast based on response
             toast({
