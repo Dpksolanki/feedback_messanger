@@ -29,7 +29,7 @@ const Navbar = () => {
                 Welcome, {user?.username || user?.email}
               </span>
               <Button
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={() => signOut()}
               >
                 Logout
@@ -37,7 +37,7 @@ const Navbar = () => {
             </>
           ) : (
             <Link href="/sign-in">
-              <Button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+              <Button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
                 Login
               </Button>
             </Link>

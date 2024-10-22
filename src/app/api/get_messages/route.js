@@ -40,7 +40,7 @@ export async function GET() { // Keeping ': Request' as it is TypeScript
         }
         return Response.json({
             success: true,
-            data: userData[0].message
+            data: userData[0].messages
         }, { status: 200 });
     }
     catch (err) {
