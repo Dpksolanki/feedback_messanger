@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button"; // Assuming you have a button component
 import { User } from "@/types/user"; // Ensure you have a proper type defined
+import MessageCard from "@/components/messageCard"; // Import the MessageCard component
 
 const Page = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -190,15 +191,14 @@ const Page = () => {
         {isLoading ? <Loader2 className="animate-spin" /> : "Refresh Messages"}
       </Button>
 
-      <div className="mt-4">
+      <div className="mt-4 grid grid-cols-2 gap-4">
         {messages.length > 0 ? (
           messages.map((message) => (
-            <div key={message._id} className="border p-3 rounded-md mb-2">
-              <p>{message.content}</p>
-              <Button variant="destructive" onClick={() => handleDeleteMessage(message._id)}>
-                Delete
-              </Button>
-            </div>
+            <MessageCard 
+              key={message._id as string} 
+              message={message} 
+              onMessageDelete={handleDeleteMessage} // Pass the delete handler
+            />
           ))
         ) : (
           <p>No messages found. Please refresh or check back later.</p>
