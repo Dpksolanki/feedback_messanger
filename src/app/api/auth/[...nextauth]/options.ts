@@ -20,8 +20,8 @@ export const authOptions: NextAuthOptions = {
           // Find user by email or username
           const user = await UserModel.findOne({
             $or: [
-              { email: credentials.email },
-              { username: credentials.username }
+              { email: credentials.identifier },
+              { username: credentials.identifier } // Corrected to use identifier for username
             ]
           });
 
@@ -72,7 +72,9 @@ export const authOptions: NextAuthOptions = {
     signIn: "/sign-in" // Redirect to the custom sign-in page
   },
   session: {
-    strategy: "jwt" // Use JWT-based session strategy
+    strategy: "jwt", // Use JWT-based session strategy
+    maxAge: 30 * 24 * 60 * 60, // Set session max age to 30 days
+    updateAge: 24 * 60 * 60 // Update session if user is active within 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET // Ensure the secret is set properly
 };

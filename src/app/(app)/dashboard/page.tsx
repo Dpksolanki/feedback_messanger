@@ -27,7 +27,8 @@ const Page = () => {
     );
   };
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession(); // Add status to monitor session loading
+  // console.log(123, session);
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -58,7 +59,8 @@ const Page = () => {
     async (refresh: boolean = false) => {
       setIsLoading(true);
       try {
-        const response = await axios.get<ApiResponse>("/api/get-messages");
+        const response = await axios.get<ApiResponse>("/api/get_messages");
+        console.log("response", response);
         setMessages(response.data.messages || []);
         if (refresh) {
           toast({
@@ -83,14 +85,14 @@ const Page = () => {
   useEffect(() => {
     if (!session || !session.user) return;
     fetchMessages();
-    handleAcceptMessage();
-  }, [session, fetchMessages, handleAcceptMessage]);
+    // Removed handleAcceptMessage from here
+  }, [session, fetchMessages]);
 
   // Handle switch change
   const handleSwitchChange = async () => {
     setIsSwitching(true);
     try {
-      await axios.post("/api/accept-messages", {
+      await axios.post("/api/accept-message", {
         acceptMessages: !acceptMessages,
       });
       setValue("acceptMessages", !acceptMessages);
@@ -99,6 +101,8 @@ const Page = () => {
         description: "Message acceptance preference updated",
         variant: "default",
       });
+      // Call handleAcceptMessage here to update the state when the switch is toggled
+      handleAcceptMessage();
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
@@ -111,9 +115,13 @@ const Page = () => {
     }
   };
 
-  const { username } = session?.user as User;
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
+  // Safely handle destructuring of session data
+  let profileUrl = "";
+  if (session && session.user) {
+    const { username } = session.user as User; // Ensure session.user exists
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    profileUrl = `${baseUrl}/u/${username}`;
+  }
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
@@ -123,7 +131,13 @@ const Page = () => {
     });
   };
 
+  if (status === "loading") {
+    // Show a loading state while session is being fetched
+    return <div className="text-center">Loading...</div>;
+  }
+
   if (!session || !session.user) {
+    // Show login prompt if the user is not logged in
     return <div className="text-center">Please log in to view your dashboard</div>;
   }
 
@@ -151,7 +165,16 @@ const Page = () => {
             checked={acceptMessages}
             onCheckedChange={handleSwitchChange}
             disabled={isSwitching}
-          />
+            className={`${
+              acceptMessages ? "bg-green-500" : "bg-gray-500"
+            } relative inline-flex items-center h-6 rounded-full w-11`}
+          >
+            <span
+              className={`${
+                acceptMessages ? "translate-x-6" : "translate-x-1"
+              } inline-block w-4 h-4 transform bg-white rounded-full transition`}
+            />
+          </Switch>
           <span>Accept Messages: {acceptMessages ? "On" : "Off"}</span>
         </div>
       </div>

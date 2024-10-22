@@ -26,7 +26,7 @@ const Navbar = () => {
           {session ? (
             <>
               <span className="text-white mr-4">
-                Welcome, {user?.name || user?.email}
+                Welcome, {user?.username || user?.email}
               </span>
               <Button
                 className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
@@ -36,7 +36,7 @@ const Navbar = () => {
               </Button>
             </>
           ) : (
-            <Link href="/signin">
+            <Link href="/sign-in">
               <Button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
                 Login
               </Button>
